@@ -11,6 +11,13 @@
 
     const form = document.getElementById('form');
     const input = document.getElementById('input');
+    const messages = document.getElementById('messages');
+
+    socket.on('chat message', (msg) => {
+      const item = `<li>${msg}</li>`
+      messages.insertAdjacentHTML('beforeend', item);
+    });
+
 
     form.addEventListener('submit', (e) => {
         e.preventDefault()
@@ -110,6 +117,12 @@
             color: #888;
         }
 
+        #message-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
         #send-button {
             padding: 12px 24px;
             background: #7289da;
@@ -131,53 +144,13 @@
         <div class="chat-header">
             <h2>Chat en tiempo real</h2>
         </div>
-        <div class="chat-messages" id="chat-messages">
-            <!-- Los mensajes se agregarán aquí dinámicamente -->
+        <div class="chat-messages">
+            <ul id="messages"></ul>
         </div>
-        <div class="chat-input">
-            <input type="text" id="message-input" placeholder="Escribe un mensaje...">
-            <button id="send-button">Enviar</button>
-        </div>
+        <form id="form" class="chat-input">
+            <input type="text" id="input" autocomplete="off" placeholder="Escribe un mensaje...">
+            <button type="submit">Enviar</button>
+        </form>
     </div>
-
-    <script>
-        const chatMessages = document.getElementById('chat-messages');
-        const messageInput = document.getElementById('message-input');
-        const sendButton = document.getElementById('send-button');
-
-        // Función para agregar un mensaje al chat
-        function addMessage(message, isSent = true) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message', isSent ? 'sent' : 'received');
-            messageElement.textContent = message;
-            chatMessages.appendChild(messageElement);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        // Evento para enviar mensaje
-        sendButton.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        function sendMessage() {
-            const message = messageInput.value.trim();
-            if (message) {
-                addMessage(message, true);
-                // Simular respuesta después de 1 segundo
-                setTimeout(() => {
-                    addMessage('Mensaje recibido 👍', false);
-                }, 1000);
-                messageInput.value = '';
-            }
-        }
-
-        // Agregar algunos mensajes de ejemplo
-        setTimeout(() => {
-            addMessage('¡Hola! 👋', false);
-        }, 500);
-    </script>
 </body>
 </html>
