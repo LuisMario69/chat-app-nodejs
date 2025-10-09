@@ -27,7 +27,7 @@ try {
   console.log("✅ Conectado a SQL Server")
 } catch (err) {
   console.error("❌ Error conectando a SQL Server:", err)
-  process.exit(1) // Salir si no hay conexión
+  process.exit(1)
 }
 
 const app = express()
